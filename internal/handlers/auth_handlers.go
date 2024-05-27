@@ -3,21 +3,23 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/JWindy92/wanna-go-api/internal/logging"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
+var logger = logging.GetLogger()
+
 func Pong(c *gin.Context) {
-	zap.L().Info("Pong")
+	logger.Info("Pong")
 	c.String(http.StatusOK, "Pong")
 }
 
 func Login(c *gin.Context) {
-	zap.L().Info("Login")
+	logger.Info("Login")
 	c.String(http.StatusOK, "Login")
 }
 
 func Register(c *gin.Context) {
-	zap.L().Info("Register")
+	logger.Info("Register")
 	c.String(http.StatusOK, "Register")
 }

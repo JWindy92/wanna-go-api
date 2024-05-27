@@ -1,28 +1,29 @@
 package main
 
 import (
-	"log"
-
 	"github.com/JWindy92/wanna-go-api/internal/handlers"
+	"github.com/JWindy92/wanna-go-api/internal/logging"
+	"github.com/JWindy92/wanna-go-api/internal/utils"
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 	"go.uber.org/zap"
 )
 
+var logger *zap.Logger
+
 func main() {
-
-	logger, err := zap.NewProduction()
-	if err != nil {
-		log.Fatalf("cant initialize zap logger: %v", err)
-	}
+	logger = logging.GetLogger()
 	defer logger.Sync()
+	logger.Info("Starting application")
 
-	zap.ReplaceGlobals(logger)
+	utils.Connect()
+
+	// zap.ReplaceGlobals(logger)
 	r := gin.Default()
 
-	// handlers.Pong()
-	// Setup routes
 	r.GET("/ping", handlers.Pong)
+	r.GET("/login", handlers.Login)
+	r.GET("/register", handlers.Register)
 
-	// // Start the server
 	r.Run(":8080")
 }

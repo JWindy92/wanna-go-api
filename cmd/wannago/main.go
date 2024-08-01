@@ -16,14 +16,18 @@ func main() {
 	defer logger.Sync()
 	logger.Info("Starting application")
 
-	utils.Connect()
+	db, err := utils.Connect()
+	if err != nil {
+		logger.Sugar().Errorf("Error opening database connection: %v\n", err)
+	}
+	defer db.Close()
 
 	// zap.ReplaceGlobals(logger)
 	r := gin.Default()
 
 	r.GET("/ping", handlers.Pong)
-	r.GET("/login", handlers.Login)
-	r.GET("/register", handlers.Register)
+	r.POST("/login", handlers.Login)
+	r.POST("/register", handlers.Register)
 
 	r.Run(":8080")
 }
